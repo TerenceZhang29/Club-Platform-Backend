@@ -1,0 +1,57 @@
+***API documentation***
+
+Get all events:
+Request: GET /api/events/
+Response: 
+{
+
+
+Get an event:
+Request: GET /api/event/{event_id}/
+Response: 
+{
+
+Create an event:
+Request: POST /api/events/
+Response: 
+{
+
+Edit an event:
+Request: POST /api/event/{event_id}/
+Response: 
+{
+
+Delete an event: 
+Request: DELETE /api/event/{event_id}/
+Response: 
+{
+
+Get all clubs:
+Request: GET /api/clubs/
+Response: 
+{
+
+Get a club:
+Request: GET /api/club/{club_id}/
+Response: 
+{
+
+Create a club:
+Request: POST /api/clubs/
+Response: 
+{
+
+Edit a club:
+Request: POST /api/club/{club_id}/
+Response: 
+{
+
+Get all application:
+Request: GET /api/applications/
+Response: 
+{
+
+Create a application:
+Request: POST /api/applications/
+Response: 
+{

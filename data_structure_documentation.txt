@@ -1,0 +1,56 @@
+***Data Structure:***
+
+club (
+id: INTEGER
+name: TEXT
+link: TEXT
+industry: TEXT
+email: TEXT (nullable = True)
+phone: TEXT (nullable = True)
+about: TEXT
+location: TEXT
+registered_user: INTEGER
+)
+
+event(
+id: INTEGER
+club_id: INTEGER
+time: TEXT 
+description: TEXT
+link: TEXT
+industry: Text
+location: Text
+registed_user: INTEGER
+)
+
+user (
+id: INTEGER 
+name: TEXT
+major: TEXT
+secondary_Major: TEXT
+industry: TEXT
+)
+
+your_club_users (
+id: INTEGER
+user_id: INTEGER
+club_id: INTEGER
+)
+
+subscribed_club_users (
+id: INTEGER
+user_id: INTEGER
+club_id: INTEGER
+)
+
+event_users (
+id: INTEGER
+user_id: INTEGER
+event_id: INTEGER
+)
+
+(optional)event_clubs (
+id: INTEGER
+event_id: INTEGER
+club_id: INTEGER
+)
