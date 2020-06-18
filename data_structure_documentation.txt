@@ -9,7 +9,7 @@ email: TEXT (nullable = True)
 phone: TEXT (nullable = True)
 about: TEXT
 location: TEXT
-registered_user: INTEGER
+registered_users: INTEGER
 )
 
 event(
@@ -20,7 +20,7 @@ description: TEXT
 link: TEXT
 industry: Text
 location: Text
-registed_user: INTEGER
+registed_users: INTEGER
 )
 
 user (
