@@ -79,3 +79,16 @@ class Event(db.Model):
     self.industry = kwargs.get("industry", "None")
     self.location = kwargs.get("location", "None")
     self.registered_users = kwargs.get("registered_users", 0)
+
+  def serialize(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+      "club_id": self.club_id,
+      "time": self.time,
+      "description": self.description,
+      "link": self.link,
+      "industry": self.industry,
+      "location": self.location,
+      "registered_users": self.registered_users
+    }
