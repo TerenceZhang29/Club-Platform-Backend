@@ -32,7 +32,7 @@ Response:
 {
 
 Get a club:
-Request: GET /api/club/{club_id}/
+Request: GET /api/club/<int: club_id>/
 Response: 
 {
 
@@ -41,8 +41,8 @@ Request: POST /api/clubs/
 Response: 
 {
 
-Edit a club:
-Request: POST /api/club/{club_id}/
+Update a club:
+Request: POST /api/club/<int: club_id>/
 Response: 
 {
 

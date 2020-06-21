@@ -56,6 +56,23 @@ def create_club():
   )
   return success_response(club, 201)
 
+# get a club by id
+@app.route("/club/<int:club_id>/")
+def get_club_by_id(club_id):
+  club = dao.get_club_by_id(club_id)
+  if club is None:
+    return failure_response("Club with id: " + str(club_id) + " not found !")
+  return success_response(club)
+
+# update a club by id
+@app.route("/club/<int:club_id>/", methods = ["POST"])
+def update_club_by_id(club_id):
+  body = json.loads(request.data)
+  club = dao.update_club_by_id(club_id, body)
+
+  if club is None:
+    return failure_response("Club with id: " + str(club_id) + " not found !")
+  return success_response(club)
 
 
 if __name__ == '__main__':
