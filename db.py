@@ -39,7 +39,8 @@ class Club(db.Model):
     return {
       "id": self.id,
       "name": self.name,
-      "link": self.industry,
+      "link": self.link,
+      "industry": self.industry,
       "email": self.email,
       "phone": self.phone,
       "about": self.about,
