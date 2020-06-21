@@ -46,3 +46,36 @@ class Club(db.Model):
       "location": self.location,
       "registered_users": self.registered_users
     }
+
+# Class for events
+# Parameters:
+# id: event id (INTEGER)
+# name: event name (TEXT)
+# club_id: id of the club holding the event (INTEGER)
+# time: event time (TEXT) 
+# description: description of the event (TEXT)
+# link: event link (TEXT)
+# industry: event industry (Text)
+# location: event location (Text)
+# registed_users: number of students who registered for this event (INTEGER)
+class Event(db.Model):
+  __tablename__= "events"
+  id = db.Column(db.Integer, nullable = False, primary_key = True)
+  name = db.Column(db.Text, nullable = False)
+  club_id = db.Column(db.Integer, nullable = False, primary_key = False)
+  time = db.Column(db.Text, nullable = False)
+  description = db.Column(db.Text, nullable = False)
+  link = db.Column(db.Text, nullable = True)
+  industry = db.Column(db.Text, nullable = True)
+  location = db.Column(db.Text, nullable = True)
+  registerd_users = db.Column(db.Integer, nullable = True, primary_key = True)
+
+  def __init__(self, **kwargs):
+    self.name = kwargs.get("name", "None")
+    self.club_id = kwargs.get("club_id", 0)
+    self.time = kwargs.get("time", "None")
+    self.description = kwargs.get("description", "None")
+    self.link = kwargs.get("link", "None")
+    self.industry = kwargs.get("industry", "None")
+    self.location = kwargs.get("location", "None")
+    self.registered_users = kwargs.get("registered_users", 0)
