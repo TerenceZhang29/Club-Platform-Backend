@@ -31,16 +31,17 @@ class Club(db.Model):
   registered_users = db.Column(db.Integer, nullable = False)
 
   # init for class Club
-  def __init__(self, **kwargs):
-    self.name = kwargs.get("name", "None")
-    self.link = kwargs.get("link", "None")
-    self.industry = kwargs.get("industry", "None")
-    self.email = kwargs.get("email", "None")
-    self.phone = kwargs.get("phone", "None")
-    self.about = kwargs.get("about", "None")
-    self.location = kwargs.get("location", "None")
-    self.registered_users = kwargs.get("registered_users", 0)
+  def __init__(self, body):
+    self.name = body.get("name", "None")
+    self.link = body.get("link", "None")
+    self.industry = body.get("industry", "None")
+    self.email = body.get("email", "None")
+    self.phone = body.get("phone", "None")
+    self.about = body.get("about", "None")
+    self.location = body.get("location", "None")
+    self.registered_users = body.get("registered_users", 0)
 
+  # serialize method for Club
   # Return:
   # serialuzed json of club
   def serialize(self):
@@ -56,20 +57,37 @@ class Club(db.Model):
       "registered_users": self.registered_users
     }
   
-  # Class for users
-  # Parameters:
-  # id: user id
-  # name: user name
-  # major: user major
-  # secondary_major: user secondary major; "None" if not available
-  # industry: user industry
-  class User(db.Model):
-    __tablename__ = "users"
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.Text, nullable = False)
-    major = db.Column(db.Text, nullable = False)
-    secondary_major = db.Column(db.Text, nullable = False)
-    industry = db.Column(db.Text, nullable = False)
+# Class for users
+# Parameters:
+# id: user id
+# name: user name
+# major: user major
+# secondary_major: user secondary major; "None" if not available
+# industry: user industry
+class User(db.Model):
+  __tablename__ = "users"
+  id = db.Column(db.Integer, primary_key = True)
+  name = db.Column(db.Text, nullable = False)
+  major = db.Column(db.Text, nullable = False)
+  secondary_major = db.Column(db.Text, nullable = False)
+  industry = db.Column(db.Text, nullable = False)
 
-    # init for class User
-    def __init__(self, body):
+  # init for class User
+  def __init__(self, body):
+    self.name = body.get("name", "None")
+    self.major = body.get("major", "None")
+    self.secondary_major = body.get("secondary_major", "None")
+    self.industry = body.get("industry", "None")
+  
+  # serialize method for User
+  # Return:
+  # serialuzed json of user
+  def serialize(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+      "major": self.major,
+      "secondary_major": self.secondary_major,
+      "industry": self.industry
+    }
+

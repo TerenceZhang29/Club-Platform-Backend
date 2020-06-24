@@ -1,6 +1,6 @@
 import json
 from flask import Flask, request
-from db import db, Club
+from db import db, Club, User
 import dao
 
 # define db filename
@@ -24,7 +24,7 @@ def success_response(data, code=200):
 def failure_response(message, code=404):
     return json.dumps({"success": False, "error": message}), code
 
-# --Club routes------
+# --Club routes------------------------------------------
 
 # get all clubs
 @app.route("/")
@@ -36,24 +36,7 @@ def get_clubs():
 @app.route("/clubs/", methods = ["POST"])
 def create_club():
   body = json.loads(request.data)
-  name = body.get("name", "None")
-  link = body.get("link", "None")
-  industry = body.get("industry", "None")
-  email = body.get("email", "None")
-  phone = body.get("phone", "None")
-  about = body.get("about", "None")
-  location = body.get("location", "None")
-  registered_users = body.get("registered_users", 0)
-  club = dao.create_club(
-    name = name, 
-    link = link, 
-    industry = industry, 
-    email = email, 
-    phone = phone, 
-    about = about, 
-    location = location, 
-    registered_users = registered_users
-  )
+  club = dao.create_club(body)
   return success_response(club, 201)
 
 # get a club by id
@@ -74,6 +57,47 @@ def update_club_by_id(club_id):
     return failure_response("Club with id: " + str(club_id) + " not found !")
   return success_response(club)
 
+# --User routes------------------------------------------
+
+# get all users
+@app.route("/")
+@app.route("/api/users/")
+def get_users():
+  return success_response(dao.get_users())
+
+# create a user
+@app.route("/api/users/", methods = ["POST"])
+def create_user():
+  body = json.loads(request.data)
+  user = dao.create_user(body)
+  return success_response(user, 201)
+
+# get the user by id
+@app.route("/api/user/<int:user_id>/")
+def get_user_by_id(user_id):
+  user = dao.get_user_by_id(user_id)
+  if user is None:
+    return failure_response("User with id: " + str(user_id) + " not found!")
+  return success_response(user)
+
+# update the user by id
+@app.route("/api/user/<int:user_id>/", methods = ["POST"])
+def update_user_by_id(user_id):
+  body = json.loads(request.data)
+  user = dao.update_user_by_id(user_id, body)
+
+  if user is None:
+    return failure_response("User with id: " + str(user_id) + " not found!")
+  return success_response(user)
+
+# delete the user by id
+@app.route("/api/user/<int:user_id>/", methods = ["DELETE"])
+def delete_user_by_id(user_id):
+  user = dao.delete_user_by_id(user_id)
+
+  if user is None:
+    return failure_response("User with id: " + str(user_id) + " not found!")
+  return success_response(user)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
