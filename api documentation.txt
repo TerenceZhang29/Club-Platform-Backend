@@ -4,49 +4,207 @@ Get all events:
 Request: GET /api/events/
 Response: 
 {
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "name": “G body meeting”,
+      "club_id": 1,
+      “time”: "June 24 9:00am-11:00am",
+      “description”: “”,
+      “link”: "",
+      "industry": "", 
+      "location": "Rhodes", 
+      "registered_users": 50
+    },
+    {
+      "id": 2,
+      "name": “G body meeting 2”,
+      "club_id": 1,
+      “time”: "June 26 9:00am-11:00am",
+      “description”: “”,
+      “link”: "",
+      "industry": "", 
+      "location": "Rhodes", 
+      "registered_users": 30
+    }
+  ]
+}
 
 
 Get an event:
 Request: GET /api/event/{event_id}/
 Response: 
 {
+  "success": true,
+  "data": {
+      "id": 1,
+      "name": “G body meeting”,
+      "club_id": 1,
+      “time”: "June 24 9:00am-11:00am",
+      “description”: “”,
+      “link”: "",
+      "industry": "", 
+      "location": "Rhodes", 
+      "registered_users": 50
+    }
+}
 
 Create an event:
 Request: POST /api/events/
-Response: 
+Body:
 {
+  "name": <USER INPUT>,
+  "club_id": <USER INPUT>,
+  “time”: <USER INPUT>,
+  “description”: <USER INPUT>,
+  “link”: <USER INPUT>,
+  "industry": <USER INPUT>, 
+  "location": <USER INPUT>, 
+  "registered_users": 0
+}
+Response:
+{
+  "success": True,
+  "data": {
+    "id": <ID>
+    "name": <USER INPUT FOR NAME>,
+    "club_id": <USER INPUT FOR CLUB_ID>,
+    “time”: <USER INPUT FOR TIME>,
+    “description”: <USER INPUT FOR DESCRIPTION>,
+    “link”: <USER INPUT FOR LINK>,
+    "industry": <USER INPUT FOR INDUSTRY>, 
+    "location": <USER INPUT FOR LOCATION>, 
+    "registered_users": 0
+  }
+}
+
 
 Edit an event:
 Request: POST /api/event/{event_id}/
-Response: 
+Body:
 {
+  "name": <USER INPUT>,
+  "club_id": <USER INPUT>,
+  “time”: <USER INPUT>,
+  “description”: <USER INPUT>,
+  “link”: <USER INPUT>,
+  "industry": <USER INPUT>, 
+  "location": <USER INPUT>
+}
+Response:
+{
+  "success": true,
+  "data": <UPDATED POST WITH ID {event_id}>
+}
+
 
 Delete an event: 
 Request: DELETE /api/event/{event_id}/
 Response: 
 {
+  "success": true,
+  "data": <DELETED EVENT>
+}
+
 
 Get all clubs:
 Request: GET /api/clubs/
 Response: 
 {
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "name": “Cornell”,
+      "link": "www",
+      “industry”: "engineering",
+      “email”: “123@cornell.edu”,
+      “phone”: "6177777777",
+      "about": "ryrtr", 
+      "location": "jhhhh", 
+      "registered_users": 120
+    },
+    {
+      "id": 2,
+      "name": “Clubby”,
+      "link": "www.com",
+      “industry”: "engineering",
+      “email”: “453@cornell.edu”,
+      “phone”: "6077777777",
+      "about": "fun", 
+      "location": "Gates", 
+      "registered_users": 5
+    }
+  ]
+}
 
 Get a club:
 Request: GET /api/club/<int: club_id>/
 Response: 
 {
+  "success": true,
+  "data": {
+      "id": 2,
+      "name": “Clubby”,
+      "link": "www.com",
+      “industry”: "engineering",
+      “email”: “453@cornell.edu”,
+      “phone”: "6077777777",
+      "about": "fun", 
+      "location": "Gates", 
+      "registered_users": 5
+    }
+}
 
 Create a club:
 Request: POST /api/clubs/
-Response: 
+Body:
 {
+  "name": <USER INPUT>,
+  "link": <USER INPUT>,
+  “industry”: <USER INPUT>,
+  “email”: <USER INPUT>,
+  “phone”: <USER INPUT>,
+  "about": <USER INPUT>, 
+  "location": <USER INPUT>,
+  "registered_users": 0
+}
+Response:
+{
+  "success": True,
+  "data": {
+    "id": <ID>
+    "name": <USER INPUT FOR NAME>,
+    “link”: <USER INPUT FOR LINK>,
+    "industry": <USER INPUT FOR INDUSTRY>, 
+    “email”: <USER INPUT FOR EMAIL>,
+    “phone”: <USER INPUT FOR PHONE>,
+    "about": <USER INPUT FOR ABOUT>, 
+    "location": <USER INPUT FOR LOCATION>, 
+    "registered_users": 0
+  }
+}
 
 Update a club:
 Request: POST /api/club/<int: club_id>/
-Response: 
+Body:
 {
+  "name": <USER INPUT>,
+  "link": <USER INPUT>,
+  “industry”: <USER INPUT>,
+  “email”: <USER INPUT>,
+  “phone”: <USER INPUT>,
+  "about": <USER INPUT>, 
+  "location": <USER INPUT>
+}
+Response:
+{
+  "success": true,
+  "data": <UPDATED POST WITH ID {club_id}>
+}
 
-Get all application:
+Get all applications:
 Request: GET /api/applications/
 Response: 
 {
