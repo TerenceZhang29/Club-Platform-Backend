@@ -15,7 +15,7 @@ db = SQLAlchemy()
 # registered_users: number of students who registered this club
 class Club(db.Model):
   __tablename__ = "clubs"
-  id = db.Column(db.Integer, primary_key = True)
+  id = db.Column(db.Integer, primary_key = True, autoincrement = True)
   name = db.Column(db.String, nullable = False)
   link = db.Column(db.String, nullable = False)
   industry = db.Column(db.String, nullable = False)
@@ -60,15 +60,15 @@ class Club(db.Model):
 # registed_users: number of students who registered for this event (INTEGER)
 class Event(db.Model):
   __tablename__= "events"
-  id = db.Column(db.Integer, nullable = False, primary_key = True)
+  id = db.Column(db.Integer, primary_key = True, autoincrement = True)
   name = db.Column(db.Text, nullable = False)
-  club_id = db.Column(db.Integer, nullable = False, primary_key = False)
+  club_id = db.Column(db.Integer, nullable = False)
   time = db.Column(db.Text, nullable = False)
   description = db.Column(db.Text, nullable = False)
-  link = db.Column(db.Text, nullable = True)
-  industry = db.Column(db.Text, nullable = True)
-  location = db.Column(db.Text, nullable = True)
-  registerd_users = db.Column(db.Integer, nullable = True, primary_key = True)
+  link = db.Column(db.Text, nullable = False)
+  industry = db.Column(db.Text, nullable = False)
+  location = db.Column(db.Text, nullable = False)
+  registerd_users = db.Column(db.Integer, nullable = False)
 
   def __init__(self, **kwargs):
     self.name = kwargs.get("name", "None")

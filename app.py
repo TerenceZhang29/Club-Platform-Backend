@@ -1,6 +1,6 @@
 import json
 from flask import Flask, request
-from db import db, Club
+from db import db, Club, Event
 import dao
 
 # define db filename
@@ -73,6 +73,55 @@ def update_club_by_id(club_id):
   if club is None:
     return failure_response("Club with id: " + str(club_id) + " not found !")
   return success_response(club)
+
+# --Event routes------
+
+# get all events
+@app.route("/events/")
+def get_events():
+  return success_response(dao.get_events())
+
+# create a event
+@app.route("/events/", methods = ["POST"])
+def create_event():
+  body = json.loads(request.data)
+  name = body.get("name", "None")
+  club_id = body.get("club_id", 0)
+  time = body.get("time", "None")
+  description = body.get("description", "None")
+  link = body.get("link", "None")
+  industry = body.get("industry", "None")
+  location = body.get("location", "None")
+  registered_users = body.get("registered_users", 0)
+  event = dao.create_event(
+    name = name, 
+    club_id = club_id,
+    time = time,
+    description = description,
+    link = link, 
+    industry = industry, 
+    location = location, 
+    registered_users = registered_users
+  )
+  return success_response(event, 201)
+
+# get a event by id
+@app.route("/event/<int:event_id>/")
+def get_event_by_id(event_id):
+  event = dao.get_event_by_id(event_id)
+  if event is None:
+    return failure_response("Event with id: " + str(event_id) + " not found !")
+  return success_response(event)
+
+# update a event by id
+@app.route("/event/<int:event_id>/", methods = ["POST"])
+def update_event_by_id(event_id):
+  body = json.loads(request.data)
+  event = dao.update_event_by_id(event_id, body)
+
+  if event is None:
+    return failure_response("Event with id: " + str(event_id) + " not found !")
+  return success_response(event)
 
 
 if __name__ == '__main__':

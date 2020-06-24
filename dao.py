@@ -1,4 +1,4 @@
-from db import db, Club
+from db import db, Club, Event
 
 # -- Club methods -----------------------------------
 
@@ -55,3 +55,60 @@ def update_club_by_id(id, body):
   club.registered_users = body.get("registered_users", club.registered_users)
   db.session.commit()
   return club.serialize()
+
+
+# -- Event methods -----------------------------------
+
+# get all the clubs
+# Return: a list of serialized clubs
+def get_events():
+  return [e.serialize() for e in Event.query.all()]
+
+
+# create a event
+# Return: serialized form of the event
+def create_event(name, club_id, time, description, link, industry, location, registered_users):
+  event= Event(
+    name = name,
+    club_id = club_id,
+    time = time,
+    description = description,
+    link = link, 
+    industry = industry,
+    location = location,
+    registered_users = registered_users
+  )
+
+  db.session.add(event)
+  db.session.commit()
+  return event.serialize()
+
+# get a event by id
+# Return: 
+# None if the event doesn't exist;
+# Otherwise, serialized form of the event;
+def get_event_by_id(id):
+  event = Event.query.filter_by(id = id).first()
+  if event is None:
+    return None
+  return event.serialize()
+
+# update a event by id
+# Return:
+# None if the event doesn't exist
+# Otherwise, the serialized form of the updated event
+def update_event_by_id(id, body):
+  event = Event.query.filter_by(id = id).first()
+  if event is None:
+    return None
+  
+  event.name = body.get("name", event.name)
+  event.club_id = body.get("club_id", event.club_id)
+  event.time = body.get("time", event.time)
+  event.description = body.get("description", event.description)
+  event.link = body.get("link", event.link)
+  event.industry = body.get("industry", event.industry)
+  event.location = body.get("location", event.location)
+  event.registered_users = body.get("registered_users", event.registered_users)
+  db.session.commit()
+  return event.serialize()
