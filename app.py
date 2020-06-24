@@ -34,26 +34,30 @@ def get_clubs():
 
 # create a club
 @app.route("/clubs/", methods = ["POST"])
+# def create_club():
+#   body = json.loads(request.data)
+#   name = body.get("name", "None")
+#   link = body.get("link", "None")
+#   industry = body.get("industry", "None")
+#   email = body.get("email")
+#   phone = body.get("phone")
+#   about = body.get("about", "None")
+#   location = body.get("location", "None")
+#   registered_users = body.get("registered_users", 0)
+#   club = dao.create_club(
+#     name = name, 
+#     link = link, 
+#     industry = industry, 
+#     email = email, 
+#     phone = phone, 
+#     about = about, 
+#     location = location, 
+#     registered_users = registered_users
+#   )
+#   return success_response(club, 201)
 def create_club():
   body = json.loads(request.data)
-  name = body.get("name", "None")
-  link = body.get("link", "None")
-  industry = body.get("industry", "None")
-  email = body.get("email", "None")
-  phone = body.get("phone", "None")
-  about = body.get("about", "None")
-  location = body.get("location", "None")
-  registered_users = body.get("registered_users", 0)
-  club = dao.create_club(
-    name = name, 
-    link = link, 
-    industry = industry, 
-    email = email, 
-    phone = phone, 
-    about = about, 
-    location = location, 
-    registered_users = registered_users
-  )
+  club = dao.create_club(body)
   return success_response(club, 201)
 
 # get a club by id
