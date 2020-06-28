@@ -123,6 +123,15 @@ def update_event_by_id(event_id):
     return failure_response("Event with id: " + str(event_id) + " not found !")
   return success_response(event)
 
+# delete a event by id
+@app.route("/event/<int:event_id>/", methods = ["DELETE"])
+def delete_event_by_id(event_id):
+  event = dao.delete_event_by_id(event_id)
+
+  if event is None:
+    return failure_response("Event with id: " + str(event_id) + " not found !")
+  return success_response(event)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

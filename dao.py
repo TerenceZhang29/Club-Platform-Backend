@@ -112,3 +112,16 @@ def update_event_by_id(id, body):
   event.registered_users = body.get("registered_users", event.registered_users)
   db.session.commit()
   return event.serialize()
+
+# delete a event by id
+# Return:
+# None if the event doesn't exist
+# Otherwise, the seriailized form of the deleted event
+def delete_event_by_id(id):
+  event = Event.query.filter_by(id=id).first()
+  if event is None:
+    return None
+
+  db.session.delete(event)
+  db.session.commit()
+  return event.serialize()
