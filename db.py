@@ -3,6 +3,13 @@ import json
 
 db = SQLAlchemy()
 
+your_club_users = db.Table(
+  "your_club_users",
+  db.Model.metadata,
+  db.Column("user_id", db.Integer, db.ForeignKey("users.id")),
+  db.Column("club_id", db.Integer, db.ForeignKey("clubs.id"))
+) 
+
 # Class for clubs
 # Parameters:
 # id: club id
@@ -30,6 +37,8 @@ class Club(db.Model):
   location = db.Column(db.String, nullable = False)
   registered_users = db.Column(db.Integer, nullable = False)
 
+  members = db.relationship("User", secondary = your_club_users, back_populates = "your_clubs")
+
   # init for class Club
   def __init__(self, body):
     self.name = body.get("name", "None")
@@ -54,7 +63,8 @@ class Club(db.Model):
       "phone": self.phone,
       "about": self.about,
       "location": self.location,
-      "registered_users": self.registered_users
+      "registered_users": self.registered_users,
+      "members": [m.id for m in self.members]
     }
   
 # Class for users
@@ -72,6 +82,8 @@ class User(db.Model):
   secondary_major = db.Column(db.Text, nullable = False)
   industry = db.Column(db.Text, nullable = False)
 
+  your_clubs = db.relationship("Club", secondary = your_club_users, back_populates = "members" )
+
   # init for class User
   def __init__(self, body):
     self.name = body.get("name", "None")
@@ -82,12 +94,15 @@ class User(db.Model):
   # serialize method for User
   # Return:
   # serialuzed json of user
+  # includes the list of clubs the users are member
   def serialize(self):
     return {
       "id": self.id,
       "name": self.name,
       "major": self.major,
       "secondary_major": self.secondary_major,
-      "industry": self.industry
+      "industry": self.industry,
+      "your_clubs": [c.id for c in self.your_clubs]
     }
+
 

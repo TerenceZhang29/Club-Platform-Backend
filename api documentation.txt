@@ -71,6 +71,16 @@ Request: DELETE /api/user/<int: user_id>/
 Response:
 {
 
+Add a member to a club:
+Request: POST /api/club/<int:club_id>/user/<int:user_id>/
+Response:
+{
+
+Delete a member from a club:
+Request: DELETE /api/club/<int:club_id>/user/<int:user_id>/
+Response:
+{
+
 Get all application:
 Request: GET /api/applications/
 Response: 

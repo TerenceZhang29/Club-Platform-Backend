@@ -104,3 +104,44 @@ def delete_user_by_id(user_id):
   db.session.delete(user)
   db.session.commit()
   return user.serialize()
+
+# -- Club-User association methods -----------------------------------
+
+# add a member to the club
+# Return:
+# the serialized form of the member
+# None if the club/user does not exist
+def add_member_to_club(club_id, user_id):
+  club = Club.query.filter_by(id = club_id).first()
+  if club is None:
+    return None
+  
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+  
+  club.members.append(user)
+  user.your_clubs.append(club)
+
+  db.session.commit()
+  return user.serialize()
+
+# delete a member from the club
+# Return:
+# the serialized form of the deleted member
+# None if the club/user does not exist
+# None if the user is not a member of the club
+def delete_member_from_club(club_id, user_id):
+  club = Club.query.filter_by(id = club_id).first()
+  if club is None:
+    return None
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+
+  if (user not in club.members) or (club not in user.your_clubs) :
+    return None
+
+  club.members.remove(user)
+  db.session.commit()
+  return user.serialize()
