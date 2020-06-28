@@ -2,6 +2,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+# clubs to events many-to-many relationship
+clubs_to_events_table = db.Table("clubs_to_events", db.Model.metadata,
+  db.Column("club_id", db.Integer, db.ForeignKey('club.id')),
+  db.Column("event_id", db.Integer, db.ForeignKey('event.id'))
+)
+
 # Class for clubs
 # Parameters:
 # id: club id
@@ -24,6 +30,8 @@ class Club(db.Model):
   about = db.Column(db.Text, nullable = False)
   location = db.Column(db.String, nullable = False)
   registered_users = db.Column(db.Integer, nullable = False)
+  events = db.relationship('Event', secondary = clubs_to_events_table, 
+    backp_poplulates = 'clubs')
 
   def __init__(self, **kwargs):
     self.name = kwargs.get("name", "None")
@@ -44,7 +52,8 @@ class Club(db.Model):
       "phone": self.phone,
       "about": self.about,
       "location": self.location,
-      "registered_users": self.registered_users
+      "registered_users": self.registered_users,
+      "events" = [e.serialize() for e in self.events]
     }
 
 # Class for events
@@ -69,6 +78,8 @@ class Event(db.Model):
   industry = db.Column(db.Text, nullable = False)
   location = db.Column(db.Text, nullable = False)
   registered_users = db.Column(db.Integer, nullable = False)
+  clubs = db.relationship('Club', secondary = clubs_to_events_table, 
+    backp_poplulates = 'events')
 
   def __init__(self, **kwargs):
     self.name = kwargs.get("name", "None")
@@ -90,5 +101,8 @@ class Event(db.Model):
       "link": self.link,
       "industry": self.industry,
       "location": self.location,
-      "registered_users": self.registered_users
+      "registered_users": self.registered_users,
+      "clubs" = [c.serialize() for c in self.clubs]
     }
+
+
