@@ -113,6 +113,17 @@ def get_event_by_id(event_id):
     return failure_response("Event with id: " + str(event_id) + " not found !")
   return success_response(event)
 
+# get all events by club_id
+@app.route("/events/<int:club_id>/")
+def get_events_by_club_id(club_id):
+  events = dao.get_events_by_club_id(club_id)
+  if events is None:
+    club = dao.get_club_by_id(club_id)
+    if club is None:
+      return failure_response("Club with id: " + str(club_id) + " not found !")
+    return failure_response("Club with id: " + str(club_id) + "does not have any events !")
+  return success_response(events)
+
 # update a event by id
 @app.route("/event/<int:event_id>/", methods = ["POST"])
 def update_event_by_id(event_id):

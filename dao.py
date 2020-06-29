@@ -93,6 +93,17 @@ def get_event_by_id(id):
     return None
   return event.serialize()
 
+# get all event by club_id
+# Return: 
+# None if the club doesn't exist or the club does not have any avaliable events;
+# Otherwise, serialized form of the events;
+def get_events_by_club_id(club_id):
+  events = Event.query.filter_by(club_id = club_id)
+  if events is None:
+    return None
+  return [e.serialize() for e in events]
+
+
 # update a event by id
 # Return:
 # None if the event doesn't exist
