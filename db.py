@@ -3,8 +3,17 @@ import json
 
 db = SQLAlchemy()
 
+# association table of members and clubs
 your_club_users = db.Table(
   "your_club_users",
+  db.Model.metadata,
+  db.Column("user_id", db.Integer, db.ForeignKey("users.id")),
+  db.Column("club_id", db.Integer, db.ForeignKey("clubs.id"))
+) 
+
+# association table of subscribers and clubs
+subscribed_club_users = db.Table(
+  "subscribed_club_users",
   db.Model.metadata,
   db.Column("user_id", db.Integer, db.ForeignKey("users.id")),
   db.Column("club_id", db.Integer, db.ForeignKey("clubs.id"))
@@ -38,6 +47,7 @@ class Club(db.Model):
   registered_users = db.Column(db.Integer, nullable = False)
 
   members = db.relationship("User", secondary = your_club_users, back_populates = "your_clubs")
+  subscribers = db.relationship("User", secondary = subscribed_club_users, back_populates = "subscribed_clubs")
 
   # init for class Club
   def __init__(self, body):
@@ -64,7 +74,8 @@ class Club(db.Model):
       "about": self.about,
       "location": self.location,
       "registered_users": self.registered_users,
-      "members": [m.id for m in self.members]
+      "members": [m.id for m in self.members],
+      "subscribers": [s.id for s in self.subscribers]
     }
   
 # Class for users
@@ -83,6 +94,7 @@ class User(db.Model):
   industry = db.Column(db.Text, nullable = False)
 
   your_clubs = db.relationship("Club", secondary = your_club_users, back_populates = "members" )
+  subscribed_clubs = db.relationship("Club", secondary = subscribed_club_users, back_populates = "subscribers" )
 
   # init for class User
   def __init__(self, body):
@@ -102,7 +114,8 @@ class User(db.Model):
       "major": self.major,
       "secondary_major": self.secondary_major,
       "industry": self.industry,
-      "your_clubs": [c.id for c in self.your_clubs]
+      "your_clubs": [c.id for c in self.your_clubs],
+      "subscribed_clubs": [s.id for s in self.subscribed_clubs]
     }
 
 

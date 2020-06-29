@@ -145,3 +145,41 @@ def delete_member_from_club(club_id, user_id):
   club.members.remove(user)
   db.session.commit()
   return user.serialize()
+
+# add a user to subscribe the club
+# Return:
+# The serialized form of the user
+# None if the club/user does not exist
+def add_subscriber_to_club(club_id,user_id):
+  club = Club.query.filter_by(id = club_id).first()
+  if club is None:
+    return None
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+
+  club.subscribers.append(user)
+  user.subscribed_clubs.append(club)
+
+  db.session.commit()
+  return user.serialize()
+
+# delete a subscriber from the club
+# Return:
+# The serialized form of the subscriber
+# None if the club/user does not exist
+# None if the user is not a subscriber of the club
+def delete_subscriber_from_club(club_id, user_id):
+  club = Club.query.filter_by(id = club_id).first()
+  if club is None:
+    return None
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+  
+  if (user not in club.subscribers) or (club not in user.subscribed_clubs):
+    return None
+  
+  club.subscribers.remove(user)
+  db.session.commit()
+  return user.serialize()

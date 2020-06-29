@@ -102,7 +102,7 @@ def delete_user_by_id(user_id):
 # --Club-User routes------------------------------------------
 
 # add a member to the club
-@app.route("/api/club/<int:club_id>/user/<int:user_id>/", methods = ["POST"])
+@app.route("/api/member/club/<int:club_id>/user/<int:user_id>/", methods = ["POST"])
 def add_member_to_club(club_id, user_id):
   added_user = dao.add_member_to_club(club_id,user_id)
 
@@ -111,13 +111,31 @@ def add_member_to_club(club_id, user_id):
   return success_response(added_user)
 
 # delete a member from the club
-@app.route("/api/club/<int:club_id>/user/<int:user_id>/", methods = ["DELETE"])
+@app.route("/api/member/club/<int:club_id>/user/<int:user_id>/", methods = ["DELETE"])
 def delete_member_from_club(club_id, user_id):
   deleted_user = dao.delete_member_from_club(club_id,user_id)
 
   if deleted_user is None:
     return failure_response("Deletion failed!")
   return success_response(deleted_user)
+
+# add a subscriber to the club
+@app.route("/api/subscribe/club/<int:club_id>/user/<int:user_id>/", methods = ["POST"])
+def add_subscriber_to_club(club_id, user_id):
+  added_subscriber = dao.add_subscriber_to_club(club_id,user_id)
+
+  if added_subscriber is None:
+    return failure_response("Subscribition failed!")
+  return success_response(added_subscriber)
+
+# delete a subscriber from the club
+@app.route("/api/subscribe/club/<int:club_id>/user/<int:user_id>/", methods = ["DELETE"])
+def delete_subscriber_from_club(club_id, user_id):
+  deleted_subscriber = dao.delete_subscriber_from_club(club_id, user_id)
+
+  if deleted_subscriber is None:
+    return failure_response("Deletion failed!")
+  return success_response(deleted_subscriber)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
