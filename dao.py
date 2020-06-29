@@ -93,12 +93,32 @@ def get_event_by_id(id):
     return None
   return event.serialize()
 
-# get all event by club_id
+# get all events by club_id
 # Return: 
 # None if the club doesn't exist or the club does not have any avaliable events;
 # Otherwise, serialized form of the events;
 def get_events_by_club_id(club_id):
   events = Event.query.filter_by(club_id = club_id)
+  if events is None:
+    return None
+  return [e.serialize() for e in events]
+
+# get all events by industry
+# Return: 
+# None if the industry does not have any avaliable events;
+# Otherwise, serialized form of the events;
+def get_events_by_industry(industry):
+  events = Event.query.filter_by(industry = industry)
+  if events is None:
+    return None
+  return [e.serialize() for e in events]
+
+# get all events by registered users
+# Return: 
+# None if no event has this number of registered users;
+# Otherwise, serialized form of the events;
+def get_events_by_registered_users(min, max):
+  events = Event.query.filter(max >= Event.registered_users, min <= Event.registered_users)
   if events is None:
     return None
   return [e.serialize() for e in events]

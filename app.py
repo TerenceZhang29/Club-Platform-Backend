@@ -124,6 +124,22 @@ def get_events_by_club_id(club_id):
     return failure_response("Club with id: " + str(club_id) + "does not have any events !")
   return success_response(events)
 
+# get all events by industry
+@app.route("/events/<string:industry>/")
+def get_events_by_industry(industry):
+  events = dao.get_events_by_industry(industry)
+  if events is None:
+    return failure_response(industry + "industry does not have any events !")
+  return success_response(events)
+
+# get all events by registered users
+@app.route("/events/<int:min>/<int:max>/")
+def get_events_by_registered_users(min, max):
+  events = dao.get_events_by_registered_users(min, max)
+  if events is None:
+    return failure_response("no events have registered users between " + str(min) + " to " + str(max) + " !")
+  return success_response(events)
+
 # update a event by id
 @app.route("/event/<int:event_id>/", methods = ["POST"])
 def update_event_by_id(event_id):
