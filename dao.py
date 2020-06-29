@@ -10,21 +10,6 @@ def get_clubs():
 
 # create a club
 # Return: serialized form of the club
-# def create_club(name, link, industry, email, phone, about, location, registered_users):
-#   club = Club(
-#     name = name,
-#     link = link, 
-#     industry = industry,
-#     email = email,
-#     phone = phone,
-#     about = about, 
-#     location = location,
-#     registered_users = registered_users
-#   )
-
-#   db.session.add(club)
-#   db.session.commit()
-#   return club.serialize()
 def create_club(body):
   club = Club(body)
 
