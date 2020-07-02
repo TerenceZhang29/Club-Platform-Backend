@@ -28,36 +28,19 @@ def failure_response(message, code=404):
 
 # get all clubs
 @app.route("/")
-@app.route("/clubs/")
+@app.route("/api/clubs/")
 def get_clubs():
   return success_response(dao.get_clubs())
 
 # create a club
-@app.route("/clubs/", methods = ["POST"])
+@app.route("/api/clubs/", methods = ["POST"])
 def create_club():
   body = json.loads(request.data)
-  name = body.get("name", "None")
-  link = body.get("link", "None")
-  industry = body.get("industry", "None")
-  email = body.get("email", "None")
-  phone = body.get("phone", "None")
-  about = body.get("about", "None")
-  location = body.get("location", "None")
-  registered_users = body.get("registered_users", 0)
-  club = dao.create_club(
-    name = name, 
-    link = link, 
-    industry = industry, 
-    email = email, 
-    phone = phone, 
-    about = about, 
-    location = location, 
-    registered_users = registered_users
-  )
+  club = dao.create_club(body)
   return success_response(club, 201)
 
 # get a club by id
-@app.route("/club/<int:club_id>/")
+@app.route("/api/club/<int:club_id>/")
 def get_club_by_id(club_id):
   club = dao.get_club_by_id(club_id)
   if club is None:
@@ -65,7 +48,7 @@ def get_club_by_id(club_id):
   return success_response(club)
 
 # update a club by id
-@app.route("/club/<int:club_id>/", methods = ["POST"])
+@app.route("/api/club/<int:club_id>/", methods = ["POST"])
 def update_club_by_id(club_id):
   body = json.loads(request.data)
   club = dao.update_club_by_id(club_id, body)
