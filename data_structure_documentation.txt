@@ -14,6 +14,7 @@ registered_users: INTEGER
 
 event(
 id: INTEGER
+name: TEXT
 club_id: INTEGER
 time: TEXT 
 description: TEXT

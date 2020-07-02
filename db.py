@@ -19,6 +19,12 @@ subscribed_club_users = db.Table(
   db.Column("club_id", db.Integer, db.ForeignKey("clubs.id"))
 ) 
 
+# clubs to events many-to-many relationship
+clubs_to_events_table = db.Table("clubs_to_events", db.Model.metadata,
+  db.Column("club_id", db.Integer, db.ForeignKey('clubs.id')),
+  db.Column("event_id", db.Integer, db.ForeignKey('events.id'))
+)
+
 # Class for clubs
 # Parameters:
 # id: club id
@@ -37,19 +43,18 @@ subscribed_club_users = db.Table(
 class Club(db.Model):
   __tablename__ = "clubs"
   id = db.Column(db.Integer, primary_key = True)
-  name = db.Column(db.String, nullable = False)
-  link = db.Column(db.String, nullable = False)
-  industry = db.Column(db.String, nullable = False)
-  email = db.Column(db.String, nullable = False)
-  phone = db.Column(db.String, nullable = False)
+  name = db.Column(db.Text, nullable = False)
+  link = db.Column(db.Text, nullable = False)
+  industry = db.Column(db.Text, nullable = False)
+  email = db.Column(db.Text, nullable = False)
+  phone = db.Column(db.Text, nullable = False)
   about = db.Column(db.Text, nullable = False)
-  location = db.Column(db.String, nullable = False)
+  location = db.Column(db.Text, nullable = False)
   registered_users = db.Column(db.Integer, nullable = False)
-
+  
   members = db.relationship("User", secondary = your_club_users, back_populates = "your_clubs")
   subscribers = db.relationship("User", secondary = subscribed_club_users, back_populates = "subscribed_clubs")
-
-  # init for class Club
+  
   def __init__(self, body):
     self.name = body.get("name", "None")
     self.link = body.get("link", "None")
@@ -60,9 +65,6 @@ class Club(db.Model):
     self.location = body.get("location", "None")
     self.registered_users = body.get("registered_users", 0)
 
-  # serialize method for Club
-  # Return:
-  # serialuzed json of club
   def serialize(self):
     return {
       "id": self.id,
@@ -76,6 +78,52 @@ class Club(db.Model):
       "registered_users": self.registered_users,
       "members": [m.id for m in self.members],
       "subscribers": [s.id for s in self.subscribers]
+    }
+
+# Class for events
+# Parameters:
+# id: event id (INTEGER)
+# name: event name (TEXT)
+# club_id: id of the club holding the event (INTEGER)
+# time: event time (TEXT) 
+# description: description of the event (TEXT)
+# link: event link (TEXT)
+# industry: event industry (Text)
+# location: event location (Text)
+# registed_users: number of students who registered for this event (INTEGER)
+class Event(db.Model):
+  __tablename__= "events"
+  id = db.Column(db.Integer, primary_key = True)
+  name = db.Column(db.Text, nullable = False)
+  club_id = db.Column(db.Integer, nullable = False)
+  time = db.Column(db.Text, nullable = False)
+  description = db.Column(db.Text, nullable = False)
+  link = db.Column(db.Text, nullable = False)
+  industry = db.Column(db.Text, nullable = False)
+  location = db.Column(db.Text, nullable = False)
+  registered_users = db.Column(db.Integer, nullable = False)
+
+  def __init__(self, **kwargs):
+    self.name = kwargs.get("name", "None")
+    self.club_id = kwargs.get("club_id", 0)
+    self.time = kwargs.get("time", "None")
+    self.description = kwargs.get("description", "None")
+    self.link = kwargs.get("link", "None")
+    self.industry = kwargs.get("industry", "None")
+    self.location = kwargs.get("location", "None")
+    self.registered_users = kwargs.get("registered_users", 0)
+
+  def serialize(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+      "club_id": self.club_id,
+      "time": self.time,
+      "description": self.description,
+      "link": self.link,
+      "industry": self.industry,
+      "location": self.location,
+      "registered_users": self.registered_users
     }
   
 # Class for users
