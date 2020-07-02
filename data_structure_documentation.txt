@@ -28,7 +28,7 @@ user (
 id: INTEGER 
 name: TEXT
 major: TEXT
-secondary_Major: TEXT
+secondary_major: TEXT
 industry: TEXT
 )
 

@@ -204,7 +204,42 @@ Response:
   "data": <UPDATED POST WITH ID {club_id}>
 }
 
-Get all applications:
+Get all users:
+Request: GET /api/users/
+Response:
+{
+
+Get a user:
+Request: GET /api/user/<int: user_id>/
+Response:
+{
+
+Create a user:
+Request: POST /api/users/
+Response:
+{
+
+Update a user:
+Request: POST /api/user/<int: user_id>/
+Response:
+{
+
+Delete a user:
+Request: DELETE /api/user/<int: user_id>/
+Response:
+{
+
+Add a member to a club:
+Request: POST /api/club/<int:club_id>/user/<int:user_id>/
+Response:
+{
+
+Delete a member from a club:
+Request: DELETE /api/club/<int:club_id>/user/<int:user_id>/
+Response:
+{
+
+Get all application:
 Request: GET /api/applications/
 Response: 
 {

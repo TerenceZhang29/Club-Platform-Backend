@@ -1,6 +1,6 @@
 import json
 from flask import Flask, request
-from db import db, Club, Event
+from db import db, Club, Event, User
 import dao
 
 # define db filename
@@ -24,10 +24,9 @@ def success_response(data, code=200):
 def failure_response(message, code=404):
     return json.dumps({"success": False, "error": message}), code
 
-# --Club routes------
+# --Club routes------------------------------------------
 
 # get all clubs
-@app.route("/")
 @app.route("/api/clubs/")
 def get_clubs():
   return success_response(dao.get_clubs())
@@ -56,6 +55,85 @@ def update_club_by_id(club_id):
   if club is None:
     return failure_response("Club with id: " + str(club_id) + " not found !")
   return success_response(club)
+
+# --User routes------------------------------------------
+
+# get all users
+@app.route("/api/users/")
+def get_users():
+  return success_response(dao.get_users())
+
+# create a user
+@app.route("/api/users/", methods = ["POST"])
+def create_user():
+  body = json.loads(request.data)
+  user = dao.create_user(body)
+  return success_response(user, 201)
+
+# get the user by id
+@app.route("/api/user/<int:user_id>/")
+def get_user_by_id(user_id):
+  user = dao.get_user_by_id(user_id)
+  if user is None:
+    return failure_response("User with id: " + str(user_id) + " not found!")
+  return success_response(user)
+
+# update the user by id
+@app.route("/api/user/<int:user_id>/", methods = ["POST"])
+def update_user_by_id(user_id):
+  body = json.loads(request.data)
+  user = dao.update_user_by_id(user_id, body)
+
+  if user is None:
+    return failure_response("User with id: " + str(user_id) + " not found!")
+  return success_response(user)
+
+# delete the user by id
+@app.route("/api/user/<int:user_id>/", methods = ["DELETE"])
+def delete_user_by_id(user_id):
+  user = dao.delete_user_by_id(user_id)
+
+  if user is None:
+    return failure_response("User with id: " + str(user_id) + " not found!")
+  return success_response(user)
+
+# --Club-User routes------------------------------------------
+
+# add a member to the club
+@app.route("/api/member/club/<int:club_id>/user/<int:user_id>/", methods = ["POST"])
+def add_member_to_club(club_id, user_id):
+  added_user = dao.add_member_to_club(club_id,user_id)
+
+  if added_user is None:
+    return failure_response("Addition failed!")
+  return success_response(added_user)
+
+# delete a member from the club
+@app.route("/api/member/club/<int:club_id>/user/<int:user_id>/", methods = ["DELETE"])
+def delete_member_from_club(club_id, user_id):
+  deleted_user = dao.delete_member_from_club(club_id,user_id)
+
+  if deleted_user is None:
+    return failure_response("Deletion failed!")
+  return success_response(deleted_user)
+
+# add a subscriber to the club
+@app.route("/api/subscribe/club/<int:club_id>/user/<int:user_id>/", methods = ["POST"])
+def add_subscriber_to_club(club_id, user_id):
+  added_subscriber = dao.add_subscriber_to_club(club_id,user_id)
+
+  if added_subscriber is None:
+    return failure_response("Subscribition failed!")
+  return success_response(added_subscriber)
+
+# delete a subscriber from the club
+@app.route("/api/subscribe/club/<int:club_id>/user/<int:user_id>/", methods = ["DELETE"])
+def delete_subscriber_from_club(club_id, user_id):
+  deleted_subscriber = dao.delete_subscriber_from_club(club_id, user_id)
+
+  if deleted_subscriber is None:
+    return failure_response("Deletion failed!")
+  return success_response(deleted_subscriber)
 
 # --Event routes------
 
@@ -141,7 +219,6 @@ def delete_event_by_id(event_id):
   if event is None:
     return failure_response("Event with id: " + str(event_id) + " not found !")
   return success_response(event)
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
