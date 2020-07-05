@@ -186,6 +186,7 @@ def delete_subscriber_from_club(club_id, user_id):
   db.session.commit()
   return user.serialize()
 
+
 # -- Event methods -----------------------------------
 
 # get all the clubs
@@ -287,3 +288,90 @@ def delete_event_by_id(id):
   db.session.delete(event)
   db.session.commit()
   return event.serialize()
+
+# -- Event-User association methods -----------------------------------
+
+# register a user to the event
+# Return:
+# the serialized form of the member
+# None if the event/user does not exist
+def register_user_to_event(event_id, user_id):
+  event = Event.query.filter_by(id = event_id).first()
+  if event is None:
+    return None
+  
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+  
+  event.registered_users.append(user)
+  user.registered_events.append(event)
+
+  db.session.commit()
+  return user.serialize()
+
+# unregister a user from the event
+# Return:
+# the serialized form of the deleted member
+# None if the event/user does not exist
+# None if the user is not registered in the event
+def unregister_user_from_event(event_id, user_id):
+  event = Event.query.filter_by(id = event_id).first()
+  if event is None:
+    return None
+  
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+
+  if (user not in event.register_users) or (event not in user.registered_events) :
+    return None
+
+  event.registered_users.remove(user)
+  user.registered_events.remove(event)
+
+  db.session.commit()
+  return user.serialize()
+
+# add an interested user in the event
+# Return:
+# The serialized form of the user
+# None if the event/user does not exist
+def add_intrested_user_to_event(event_id,user_id):
+  event = Event.query.filter_by(id = event_id).first()
+  if event is None:
+    return None
+  
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+
+  event.interested_users.append(user)
+  user.interested_events.append(event)
+
+  db.session.commit()
+  return user.serialize()
+
+# delete an interesed user from the event
+# Return:
+# The serialized form of the user
+# None if the event/user does not exist
+# None if the user is not intereted in the club 
+def delete_interested_user_from_event(event_id, user_id):
+  event = Event.query.filter_by(id = event_id).first()
+  if event is None:
+    return None
+  
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+  
+  if (user not in event.interested_users) or (club not in user.interested_events):
+    return None
+  
+  event.intereted_users.remove(user)
+  user.interested_events.append(event)
+
+  db.session.commit()
+  return user.serialize()
+

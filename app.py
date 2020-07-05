@@ -170,7 +170,7 @@ def create_event():
   return success_response(event, 201)
 
 # get a event by id
-@app.route("/event/<int:event_id>/")
+@app.route("/api/event/<int:event_id>/")
 def get_event_by_id(event_id):
   event = dao.get_event_by_id(event_id)
   if event is None:
@@ -178,7 +178,7 @@ def get_event_by_id(event_id):
   return success_response(event)
 
 # get all events by club_id
-@app.route("/events/<int:club_id>/")
+@app.route("/api/events/<int:club_id>/")
 def get_events_by_club_id(club_id):
   events = dao.get_events_by_club_id(club_id)
   if events is None:
@@ -189,7 +189,7 @@ def get_events_by_club_id(club_id):
   return success_response(events)
 
 # get all events by industry
-@app.route("/events/<string:industry>/")
+@app.route("/api/events/<string:industry>/")
 def get_events_by_industry(industry):
   events = dao.get_events_by_industry(industry)
   if events is None:
@@ -197,7 +197,7 @@ def get_events_by_industry(industry):
   return success_response(events)
 
 # get all events by registered users
-@app.route("/events/<int:min>/<int:max>/")
+@app.route("/api/events/<int:min>/<int:max>/")
 def get_events_by_registered_users(min, max):
   events = dao.get_events_by_registered_users(min, max)
   if events is None:
@@ -205,7 +205,7 @@ def get_events_by_registered_users(min, max):
   return success_response(events)
 
 # update a event by id
-@app.route("/event/<int:event_id>/", methods = ["POST"])
+@app.route("/api/event/<int:event_id>/", methods = ["POST"])
 def update_event_by_id(event_id):
   body = json.loads(request.data)
   event = dao.update_event_by_id(event_id, body)
@@ -215,13 +215,51 @@ def update_event_by_id(event_id):
   return success_response(event)
 
 # delete a event by id
-@app.route("/event/<int:event_id>/", methods = ["DELETE"])
+@app.route("/api/event/<int:event_id>/", methods = ["DELETE"])
 def delete_event_by_id(event_id):
   event = dao.delete_event_by_id(event_id)
 
   if event is None:
     return failure_response("Event with id: " + str(event_id) + " not found !")
   return success_response(event)
+
+# --Event-User routes------------------------------------------
+
+# register a user to the event
+@app.route("/api/register/event/<int:event_id>/user/<int:user_id>/", methods = ["POST"])
+def register_user_to_event(event_id, user_id):
+  registerd_user = dao.register_user_to_event(event_id, user_id)
+
+  if registered_user is None:
+    return failure_response("Registration failed!")
+  return success_response(registerd_user)
+
+# delete a registered_user to the vent
+@app.route("/api/register/event/<int:event_id>/user/<int:user_id>/", methods = ["DELETE"])
+def unregister_user_from_event(event_id, user_id):
+  unregistered_user = dao.unregister_user_from_event(event_id, user_id)
+
+  if unregistered_user is None:
+    return failture_response("Unregistration failed!")
+  return success_response(unregistered_user)
+
+# add an interested user to the event
+@app.route("/api/intereted/event/<int:event_id>/user/<int:user_id", methods = ["POST"])
+def add_interested_user_to_event(event_id, user_id):
+  interested_user = dao.add_interested_user_to_event(event_id, user_id)
+
+  if interested_user is None:
+    return failure_response("Addition of interested user failed!")
+  return success_response(interested_user)
+
+# delete an interested user from the event
+@app.route("/api/interested/event/<int:event_id>/user/<int:user_id>", methods = ["DELETE"])
+def delete_interesterd_user_from_event(event_id, user_id):
+  uninterested_user = dao.delete_interested_user_from_event(event_id, user_id)
+
+  if uninterested_user is None:
+    return failure_response("Deletion of interested user failed!")
+  return success_response(uninterested_user)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
