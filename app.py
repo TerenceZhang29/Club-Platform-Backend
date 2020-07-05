@@ -244,7 +244,7 @@ def unregister_user_from_event(event_id, user_id):
   return success_response(unregistered_user)
 
 # add an interested user to the event
-@app.route("/api/intereted/event/<int:event_id>/user/<int:user_id", methods = ["POST"])
+@app.route("/api/interested/event/<int:event_id>/user/<int:user_id>", methods = ["POST"])
 def add_interested_user_to_event(event_id, user_id):
   interested_user = dao.add_interested_user_to_event(event_id, user_id)
 
