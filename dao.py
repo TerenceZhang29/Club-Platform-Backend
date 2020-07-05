@@ -1,4 +1,5 @@
 from db import db, Club, Event, User
+import json
 
 # -- Club methods -----------------------------------
 
@@ -6,7 +7,6 @@ from db import db, Club, Event, User
 # Return: a list of serialized clubs
 def get_clubs():
   return [t.serialize() for t in Club.query.all()]
-
 
 # create a club
 # Return: serialized form of the club
@@ -191,8 +191,10 @@ def delete_subscriber_from_club(club_id, user_id):
 # get all the clubs
 # Return: a list of serialized clubs
 def get_events():
-  return [e.serialize() for e in Event.query.all()]
-
+  dic = {}
+  for i in range(len(Event.query.all())):
+    dic[str(i)] = Event.query.all()[i].name
+  return json.dumps(dic)
 
 # create a event
 # Return: serialized form of the event

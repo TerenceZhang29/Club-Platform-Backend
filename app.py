@@ -1,11 +1,13 @@
 import json
 from flask import Flask, request
 from db import db, Club, Event, User
+from flask_cors import CORS
 import dao
 
 # define db filename
 db_filename = "data.db"
 app = Flask(__name__)
+CORS(app)
 
 # setup config
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_filename}'
@@ -138,12 +140,13 @@ def delete_subscriber_from_club(club_id, user_id):
 # --Event routes------
 
 # get all events
-@app.route("/events/")
+@app.route("/api/events/")
 def get_events():
-  return success_response(dao.get_events())
+  print("RICHIE FUCK")
+  return success_response(dao.get_events(), 200)
 
 # create a event
-@app.route("/events/", methods = ["POST"])
+@app.route("/api/events/", methods = ["POST"])
 def create_event():
   body = json.loads(request.data)
   name = body.get("name", "None")
@@ -221,4 +224,4 @@ def delete_event_by_id(event_id):
   return success_response(event)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)
