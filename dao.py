@@ -192,10 +192,7 @@ def delete_subscriber_from_club(club_id, user_id):
 # get all the clubs
 # Return: a list of serialized clubs
 def get_events():
-  dic = {}
-  for i in range(len(Event.query.all())):
-    dic[str(i)] = Event.query.all()[i].name
-  return json.dumps(dic)
+  return [e.serialize() for e in Event.query.all()]
 
 # create a event
 # Return: serialized form of the event
@@ -304,7 +301,7 @@ def register_user_to_event(event_id, user_id):
   if user is None:
     return None
   
-  event.registered_users.append(user)
+  event.registration_users.append(user)
   user.registered_events.append(event)
 
   db.session.commit()
@@ -324,10 +321,10 @@ def unregister_user_from_event(event_id, user_id):
   if user is None:
     return None
 
-  if (user not in event.register_users) or (event not in user.registered_events) :
+  if (user not in event.registration_users) or (event not in user.registered_events) :
     return None
 
-  event.registered_users.remove(user)
+  event.registration_users.remove(user)
   user.registered_events.remove(event)
 
   db.session.commit()
