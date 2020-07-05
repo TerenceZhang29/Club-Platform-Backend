@@ -145,6 +145,7 @@ def delete_member_from_club(club_id, user_id):
   if (user not in club.members) or (club not in user.your_clubs) :
     return None
 
+  # do not need to delete from user.your_clubs
   club.members.remove(user)
   club.members_number -= 1
 
@@ -186,6 +187,7 @@ def delete_subscriber_from_club(club_id, user_id):
   if (user not in club.subscribers) or (club not in user.subscribed_clubs):
     return None
   
+  # do not need to delete from user.subscribed_clubs
   club.subscribers.remove(user)
   club.registered_users -= 1
 
