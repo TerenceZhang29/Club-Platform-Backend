@@ -50,6 +50,7 @@ class Club(db.Model):
   phone = db.Column(db.Text, nullable = False)
   about = db.Column(db.Text, nullable = False)
   location = db.Column(db.Text, nullable = False)
+  members_number = db.Column(db.Integer, nullable = False)
   registered_users = db.Column(db.Integer, nullable = False)
   
   members = db.relationship("User", secondary = your_club_users, back_populates = "your_clubs")
@@ -63,6 +64,7 @@ class Club(db.Model):
     self.phone = body.get("phone", "None")
     self.about = body.get("about", "None")
     self.location = body.get("location", "None")
+    self.members_number = body.get("members_number", 0)
     self.registered_users = body.get("registered_users", 0)
 
   def serialize(self):
@@ -75,6 +77,7 @@ class Club(db.Model):
       "phone": self.phone,
       "about": self.about,
       "location": self.location,
+      "members_number": self.members_number,
       "registered_users": self.registered_users,
       "members": [m.id for m in self.members],
       "subscribers": [s.id for s in self.subscribers]

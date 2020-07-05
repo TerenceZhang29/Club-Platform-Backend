@@ -124,6 +124,7 @@ def add_member_to_club(club_id, user_id):
   
   club.members.append(user)
   user.your_clubs.append(club)
+  club.members_number += 1
 
   db.session.commit()
   return user.serialize()
@@ -145,6 +146,8 @@ def delete_member_from_club(club_id, user_id):
     return None
 
   club.members.remove(user)
+  club.members_number -= 1
+
   db.session.commit()
   return user.serialize()
 
@@ -162,6 +165,7 @@ def add_subscriber_to_club(club_id,user_id):
 
   club.subscribers.append(user)
   user.subscribed_clubs.append(club)
+  club.registered_users += 1
 
   db.session.commit()
   return user.serialize()
@@ -183,6 +187,8 @@ def delete_subscriber_from_club(club_id, user_id):
     return None
   
   club.subscribers.remove(user)
+  club.registered_users -= 1
+
   db.session.commit()
   return user.serialize()
 
