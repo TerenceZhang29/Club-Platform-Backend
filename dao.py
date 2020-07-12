@@ -191,10 +191,7 @@ def delete_subscriber_from_club(club_id, user_id):
 # get all the clubs
 # Return: a list of serialized clubs
 def get_events():
-  dic = {}
-  for i in range(len(Event.query.all())):
-    dic[str(i)] = Event.query.all()[i].name
-  return json.dumps(dic)
+    return [t.serialize() for t in Event.query.all()]
 
 # create a event
 # Return: serialized form of the event
