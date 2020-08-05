@@ -20,12 +20,33 @@ def create_club(body):
 # get a club by id
 # Return: 
 # None if the club doesn't exist;
-# Otherwise, serialized form of the club;
+# Otherwise, a list of serialized clubs;
 def get_club_by_id(id):
   club = Club.query.filter_by(id = id).first()
   if club is None:
     return None
   return club.serialize()
+
+# get all clubs by industry
+# Return: 
+# None if the industry does not have any avaliable clubs;
+# Otherwise, serialized form of the clubs;
+def get_clubs_by_industry(industry):
+  clubs = Club.query.filter_by(industry = industry)
+  if clubs is None:
+    return None
+  return [e.serialize() for e in clubs]
+
+# get all clubs by registered users
+# Return: 
+# None if no club has this number of registered users;
+# Otherwise, serialized form of the clubs;
+def get_clubs_by_registered_users(min, max):
+  clubs = Club.query.filter(max >= Club.registered_users, min <= Club.registered_users)
+  if clubs is None:
+    return None
+  return [e.serialize() for e in clubs]
+
 
 # update a club by id
 # Return:

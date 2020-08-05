@@ -48,6 +48,22 @@ def get_club_by_id(club_id):
     return failure_response("Club with id: " + str(club_id) + " not found !")
   return success_response(club)
 
+# get all clubs by industry
+@app.route("/api/clubs/<string:industry>/")
+def get_clubs_by_industry(industry):
+  clubs = dao.get_clubs_by_industry(industry)
+  if clubs is None:
+    return failure_response(industry + "industry does not have any clubs !")
+  return success_response(clubs)
+
+# get all clubs by registered users
+@app.route("/api/clubs/<int:min>/<int:max>/")
+def get_clubs_by_registered_users(min, max):
+  clubs = dao.get_clubs_by_registered_users(min, max)
+  if clubs is None:
+    return failure_response("no clubs have registered users between " + str(min) + " to " + str(max) + " !")
+  return success_response(clubs)
+
 # update a club by id
 @app.route("/api/club/<int:club_id>/", methods = ["POST"])
 def update_club_by_id(club_id):
