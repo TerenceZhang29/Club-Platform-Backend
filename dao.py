@@ -70,6 +70,18 @@ def update_club_by_id(id, body):
   db.session.commit()
   return club.serialize()
 
+def get_most_interested_clubs():
+  clubs = Club.query.order_by(Club.subscribers.desc()).limit(5)
+  if clubs is None:
+    return None
+  return [e.serialize() for e in clubs]
+
+def desc_clubs():
+  clubs = Club.query.order_by(Club.subscribers.desc())
+  if clubs is None:
+    return None
+  return [e.serialize() for e in clubs]
+
 # -- User methods -----------------------------------
 
 # get all the users
@@ -272,7 +284,6 @@ def get_events_by_registered_users(min, max):
     return None
   return [e.serialize() for e in events]
 
-
 # update a event by id
 # Return:
 # None if the event doesn't exist
@@ -292,6 +303,18 @@ def update_event_by_id(id, body):
   event.registered_users = body.get("registered_users", event.registered_users)
   db.session.commit()
   return event.serialize()
+
+def get_most_interested_events():
+  events = Event.query.order_by(Event.registered_users.desc()).limit(5)
+  if events is None:
+    return None
+  return [e.serialize() for e in events]
+
+def desc_events():
+  events = Event.query.order_by(Event.registered_users.desc())
+  if events is None:
+    return None
+  return [e.serialize() for e in events]
 
 # delete a event by id
 # Return:

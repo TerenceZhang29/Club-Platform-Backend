@@ -64,6 +64,14 @@ def get_clubs_by_registered_users(min, max):
     return failure_response("no clubs have registered users between " + str(min) + " to " + str(max) + " !")
   return success_response(clubs)
 
+# get all clubs ordered by subscribers
+@app.route("/api/clubs/desc/")
+def desc_clubs():
+  clubs = dao.desc_clubs()
+  if clubs is None:
+    return failure_response("no clubs")
+  return success_response(clubs)
+
 # update a club by id
 @app.route("/api/club/<int:club_id>/", methods = ["POST"])
 def update_club_by_id(club_id):
@@ -218,6 +226,14 @@ def get_events_by_registered_users(min, max):
   events = dao.get_events_by_registered_users(min, max)
   if events is None:
     return failure_response("no events have registered users between " + str(min) + " to " + str(max) + " !")
+  return success_response(events)
+
+# get all events ordered by registers
+@app.route("/api/events/desc/")
+def desc_events():
+  events = dao.desc_events()
+  if events is None:
+    return failure_response("no events")
   return success_response(events)
 
 # update a event by id
