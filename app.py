@@ -124,6 +124,15 @@ def delete_user_by_id(user_id):
   return success_response(user)
 
 # --Club-User routes------------------------------------------
+# get your clubs
+@app.route("/api/member/yourclubs/user/<int:user_id>/")
+def get_your_clubs(user_id):
+  return success_response(dao.get_your_clubs(user_id))
+
+# get subscribed clubs
+@app.route("/api/member/subscribedclubs/user/<int:user_id>/")
+def get_subscribed_clubs(user_id):
+  return success_response(dao.get_subscribed_clubs(user_id))
 
 # add a member to the club
 @app.route("/api/member/club/<int:club_id>/user/<int:user_id>/", methods = ["POST"])
@@ -254,6 +263,30 @@ def delete_event_by_id(event_id):
   if event is None:
     return failure_response("Event with id: " + str(event_id) + " not found !")
   return success_response(event)
+
+# --Event-User routes------------------------------------------
+# get registered events
+@app.route("/api/member/events/user/<int:user_id>/")
+def get_your_clubs(user_id):
+  return success_response(dao.get_registered_events(user_id))
+
+# add a register to the event
+@app.route("/api/member/event/<int:club_id>/user/<int:user_id>/", methods = ["POST"])
+def add_register_to_event(event_id, user_id):
+  added_user = dao.add_register_to_event(event_id, user_id)
+
+  if added_user is None:
+    return failure_response("Addition failed!")
+  return success_response(added_user)
+
+# delete a member from the club
+@app.route("/api/member/event/<int:club_id>/user/<int:user_id>/", methods = ["DELETE"])
+def delete_member_from_club(event_id, user_id):
+  deleted_user = dao.delete_register_from_event(event_id, user_id)
+
+  if deleted_user is None:
+    return failure_response("Deletion failed!")
+  return success_response(deleted_user)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)

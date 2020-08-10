@@ -11,6 +11,14 @@ your_club_users = db.Table(
   db.Column("club_id", db.Integer, db.ForeignKey("clubs.id"))
 ) 
 
+# association table of registers and events
+event_users = db.Table(
+  "event_users",
+  db.Model.metadata,
+  db.Column("user_id", db.Integer, db.ForeignKey("users.id")),
+  db.Column("event_id", db.Integer, db.ForeignKey("events.id"))
+) 
+
 # association table of subscribers and clubs
 subscribed_club_users = db.Table(
   "subscribed_club_users",
@@ -103,6 +111,8 @@ class Event(db.Model):
   location = db.Column(db.Text, nullable = False)
   registered_users = db.Column(db.Integer, nullable = False)
 
+  registers = db.relationship("User", secondary = event_users, back_populates = "registered_events")
+
   def __init__(self, **kwargs):
     self.name = kwargs.get("name", "None")
     self.club_id = kwargs.get("club_id", 0)
@@ -124,6 +134,7 @@ class Event(db.Model):
       "industry": self.industry,
       "location": self.location,
       "registered_users": self.registered_users
+      "registers": [r.id for m in self.registers]
     }
   
 # Class for users
@@ -143,6 +154,7 @@ class User(db.Model):
 
   your_clubs = db.relationship("Club", secondary = your_club_users, back_populates = "members" )
   subscribed_clubs = db.relationship("Club", secondary = subscribed_club_users, back_populates = "subscribers" )
+  registerd_events = db.relationship("Event", secondary = event_users, back_populates = "registers")
 
   # init for class User
   def __init__(self, body):
@@ -164,6 +176,7 @@ class User(db.Model):
       "industry": self.industry,
       "your_clubs": [c.id for c in self.your_clubs],
       "subscribed_clubs": [s.id for s in self.subscribed_clubs]
+      "registered_events": [r.id for r in self.registered_events]
     }
 
 

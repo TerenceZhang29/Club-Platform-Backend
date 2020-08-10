@@ -219,6 +219,18 @@ def delete_subscriber_from_club(club_id, user_id):
   db.session.commit()
   return user.serialize()
 
+def get_your_clubs(user_id):
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+  return user.your_clubs
+
+def get_subscribed_clubs(user_id):
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+  return user.subscribed_clubs
+
 # -- Event methods -----------------------------------
 
 # get all the clubs
@@ -328,3 +340,50 @@ def delete_event_by_id(id):
   db.session.delete(event)
   db.session.commit()
   return event.serialize()
+
+# -- Event-User association methods -----------------------------------
+
+# add a register to an event
+# Return:
+# the serialized form of registers
+# None if the event/user does not exist
+def add_register_to_event(event_id, user_id):
+  event = Event.query.filter_by(id = event_id).first()
+  if event is None:
+    return None
+  
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+
+  event.registers.append(user)
+  user.registered_events.append(event)
+
+  db.session.commit()
+  return user.serialize()
+
+# delete a register from the event
+# Return:
+# the serialized form of the deleted register
+# None if the event/user does not exist
+# None if the user is not a of the event
+def delete_register_from_event(event_id, user_id):
+  event = Event.query.filter_by(id = event_id).first()
+  if event is None:
+    return None
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+
+  if (user not in event.registers) or (club not in user.registered_events) :
+    return None
+
+  event.registers.remove(user)
+  db.session.commit()
+  return user.serialize()
+
+def get_registered_events(user_id):
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+  return user.registered_events
