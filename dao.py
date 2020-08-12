@@ -71,13 +71,13 @@ def update_club_by_id(id, body):
   return club.serialize()
 
 def get_most_interested_clubs():
-  clubs = Club.query.order_by(Club.subscribers.desc()).limit(5)
+  clubs = Club.query.order_by(Club.registered_users.desc()).limit(5)
   if clubs is None:
     return None
   return [e.serialize() for e in clubs]
 
 def desc_clubs():
-  clubs = Club.query.order_by(Club.subscribers.desc())
+  clubs = Club.query.order_by(Club.registered_users.desc())
   if clubs is None:
     return None
   return [e.serialize() for e in clubs]
@@ -391,7 +391,7 @@ def delete_register_from_event(event_id, user_id):
   if user is None:
     return None
 
-  if (user not in event.registers) or (club not in user.registered_events) :
+  if (user not in event.registers) or (event not in user.registered_events) :
     return None
 
   event.registers.remove(user)

@@ -59,7 +59,7 @@ class Club(db.Model):
   about = db.Column(db.Text, nullable = False)
   location = db.Column(db.Text, nullable = False)
   registered_users = db.Column(db.Integer, nullable = False)
-  
+
   members = db.relationship("User", secondary = your_club_users, back_populates = "your_clubs")
   subscribers = db.relationship("User", secondary = subscribed_club_users, back_populates = "subscribed_clubs")
   
