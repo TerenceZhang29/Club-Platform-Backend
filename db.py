@@ -133,7 +133,7 @@ class Event(db.Model):
       "link": self.link,
       "industry": self.industry,
       "location": self.location,
-      "registered_users": self.registered_users
+      "registered_users": self.registered_users,
       "registers": [r.id for m in self.registers]
     }
   
@@ -175,7 +175,7 @@ class User(db.Model):
       "secondary_major": self.secondary_major,
       "industry": self.industry,
       "your_clubs": [c.id for c in self.your_clubs],
-      "subscribed_clubs": [s.id for s in self.subscribed_clubs]
+      "subscribed_clubs": [s.id for s in self.subscribed_clubs],
       "registered_events": [r.id for r in self.registered_events]
     }
 

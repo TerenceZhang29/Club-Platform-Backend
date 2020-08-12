@@ -223,7 +223,8 @@ def get_your_clubs(user_id):
   user = User.query.filter_by(id = user_id).first()
   if user is None:
     return None
-  return user.your_clubs
+  clubs = user.your_clubs
+  return [e.serialize() for e in clubs]
 
 def get_subscribed_clubs(user_id):
   user = User.query.filter_by(id = user_id).first()

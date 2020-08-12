@@ -267,7 +267,7 @@ def delete_event_by_id(event_id):
 # --Event-User routes------------------------------------------
 # get registered events
 @app.route("/api/member/events/user/<int:user_id>/")
-def get_your_clubs(user_id):
+def get_your_events(user_id):
   return success_response(dao.get_registered_events(user_id))
 
 # add a register to the event
@@ -279,9 +279,9 @@ def add_register_to_event(event_id, user_id):
     return failure_response("Addition failed!")
   return success_response(added_user)
 
-# delete a member from the club
+# delete a register from the event
 @app.route("/api/member/event/<int:club_id>/user/<int:user_id>/", methods = ["DELETE"])
-def delete_member_from_club(event_id, user_id):
+def delete_register_from_event(event_id, user_id):
   deleted_user = dao.delete_register_from_event(event_id, user_id)
 
   if deleted_user is None:
