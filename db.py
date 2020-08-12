@@ -156,6 +156,9 @@ class User(db.Model):
   subscribed_clubs = db.relationship("Club", secondary = subscribed_club_users, back_populates = "subscribers" )
   registerd_events = db.relationship("Event", secondary = event_users, back_populates = "registers")
 
+  img = db.Column(db.Text, unique=True, nullable=False)
+  img_name = db.Column(db.Text, nullable=False)
+  mimetype = db.Column(db.Text, nullable=False)
   # init for class User
   def __init__(self, body):
     self.name = body.get("name", "None")
@@ -178,5 +181,7 @@ class User(db.Model):
       "subscribed_clubs": [s.id for s in self.subscribed_clubs],
       "registered_events": [r.id for r in self.registered_events]
     }
+
+
 
 

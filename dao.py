@@ -127,6 +127,21 @@ def update_user_by_id(user_id, body):
   db.session.commit()
   return user.serialize()
 
+# update a user with given user id and json
+# Return:
+# serialized form of the updated user
+# None if the user does not exist
+def update_user_image(user_id, img, img_name, mimetype):
+  user = User.query.filter_by(id = user_id).first()
+  if user is None:
+    return None
+  
+  user.img = img
+  user.img_name = img_name
+  user.mimetype = mimetype
+  db.session.commit()
+  return user.serialize()
+
 # delete the user with given user id
 # Return:
 # serialized form of the user deleted

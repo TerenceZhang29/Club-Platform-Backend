@@ -1,5 +1,6 @@
 import json
-from flask import Flask, request
+from flask import Flask, request, Response
+from werkzeug.utils import secure_filename
 from db import db, Club, Event, User
 from flask_cors import CORS
 import dao
@@ -287,6 +288,34 @@ def delete_register_from_event(event_id, user_id):
   if deleted_user is None:
     return failure_response("Deletion failed!")
   return success_response(deleted_user)
+
+
+@app.route('/upload/<int:user_id>/', methods=['POST'])
+def upload(user_id):
+  pic = request.files['pic']
+  if not pic:
+    return 'No pic uploaded!', 400
+
+  filename = secure_filename(pic.filename)
+  mimetype = pic.mimetype
+  if not filename or not mimetype:
+    return 'Bad upload!', 400
+  
+  user = dao.update_user_image(user_id, pic.read(), filename, mimetype)
+  if user is None:
+    return failure_response("Upload failed!")
+  return success_response(user)
+
+  return 'Img Uploaded!', 200
+
+
+@app.route('/user/<int:id>')
+def get_img(id):
+  user = User.query.filter_by(id=id).first()
+  if not user:
+    return 'User Not Found!', 404
+
+  return Response(user.img, mimetype=user.mimetype)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
