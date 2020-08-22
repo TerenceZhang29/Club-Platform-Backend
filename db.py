@@ -163,6 +163,9 @@ class User(db.Model):
     self.major = body.get("major", "None")
     self.secondary_major = body.get("secondary_major", "None")
     self.industry = body.get("industry", "None")
+    self.img = body.get("img", "None")
+    self.img_name = body.get("img_name", "None")
+    self.mimetype = body.get("mimetype", "None")
   
   # serialize method for User
   # Return:
