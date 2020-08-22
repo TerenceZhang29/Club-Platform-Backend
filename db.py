@@ -154,9 +154,9 @@ class User(db.Model):
   subscribed_clubs = db.relationship("Club", secondary = subscribed_club_users, back_populates = "subscribers" )
   registered_events = db.relationship("Event", secondary = event_users, back_populates = "registers")
 
-  img = db.Column(db.Text, unique=True, nullable=False)
-  img_name = db.Column(db.Text, nullable=False)
-  mimetype = db.Column(db.Text, nullable=False)
+  img = db.Column(db.Text, unique=True, nullable=True)
+  img_name = db.Column(db.Text, nullable=True)
+  mimetype = db.Column(db.Text, nullable=True)
   # init for class User
   def __init__(self, body):
     self.name = body.get("name", "None")
